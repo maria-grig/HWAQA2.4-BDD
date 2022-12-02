@@ -60,4 +60,17 @@ public class MoneyTransferTest {
         Assertions.assertEquals(firstBalanceCard2 + sum, secondBalanceCard2);
     }
 
+    @Test
+    void shouldReturnErrorTransferOverCardBalance() {
+        LoginPage loginPage = new LoginPage();
+        VerificationPage verificationPage = loginPage.validLogin(DataHelper.getAuthInfo());
+        DashBoardPage dashBoardPage = verificationPage.validVerify(DataHelper.getCode(DataHelper.getAuthInfo()));
+        int firstBalanceCard2 = dashBoardPage.getSecondCardBalance();
+        int sum = DataHelper.generateInvalidAmount(firstBalanceCard2);
+        MoneyTransferPage moneyTransferPage = dashBoardPage.replenishCard1();
+        moneyTransferPage.makeTransfer(Integer.toString(sum), DataHelper.getSecondCard().getNumber());
+        moneyTransferPage.findErrorMessage("Ошибка! Попытка перевода суммы, превышающей лимит остатка на карте списания");
+
     }
+
+}
