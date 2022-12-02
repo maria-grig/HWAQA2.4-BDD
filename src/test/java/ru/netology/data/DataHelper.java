@@ -1,4 +1,5 @@
 package ru.netology.data;
+
 import lombok.Value;
 
 import java.util.Random;
