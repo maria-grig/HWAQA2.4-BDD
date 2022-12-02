@@ -1,10 +1,10 @@
 package ru.netology.page;
 
-
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import ru.netology.data.DataHelper;
 
+import static com.codeborne.selenide.Condition.exactText;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 public class LoginPage {
@@ -28,7 +28,7 @@ public class LoginPage {
     }
 
     public void findErrorMessage(String expectedText) {
-        errorMessageOfLogin.shouldHave(Condition.exactText(expectedText)).shouldBe(Condition.visible);
+        errorMessageOfLogin.shouldHave(exactText(expectedText)).shouldBe(visible);
     }
 
 }
