@@ -84,5 +84,26 @@ public class MoneyTransferTest {
         moneyTransferPage.makeTransferWithoutCardNumber(Integer.toString(sum));
         moneyTransferPage.findErrorMessage("Ошибка! Произошла ошибка");
     }
+    @Test
+    void shouldReturnErrorForWrongCardNumber() {
+        LoginPage loginPage = new LoginPage();
+        VerificationPage verificationPage = loginPage.validLogin(DataHelper.getAuthInfo());
+        DashBoardPage dashBoardPage1 = verificationPage.validVerify(DataHelper.getCode(DataHelper.getAuthInfo()));
+        int firstBalanceCard2 = dashBoardPage1.getSecondCardBalance();
+        int sum = DataHelper.generateValidAmount(firstBalanceCard2);
+        MoneyTransferPage moneyTransferPage = dashBoardPage1.replenishCard1();
+        moneyTransferPage.makeValidTransfer(Integer.toString(sum), DataHelper.getInvalidCard().getNumber());
+        moneyTransferPage.findErrorMessage("Ошибка! Произошла ошибка");
+    }
+    @Test
+    void shouldReturnErrorWhenZeroSum() {
+        LoginPage loginPage = new LoginPage();
+        VerificationPage verificationPage = loginPage.validLogin(DataHelper.getAuthInfo());
+        DashBoardPage dashBoardPage = verificationPage.validVerify(DataHelper.getCode(DataHelper.getAuthInfo()));
+        int sum = 0;
+        MoneyTransferPage moneyTransferPage = dashBoardPage.replenishCard1();
+        moneyTransferPage.makeValidTransfer(Integer.toString(sum), DataHelper.getSecondCard().getNumber());
+        moneyTransferPage.findErrorMessage("Ошибка! Укажите сумму перевода");
+    }
 
 }
