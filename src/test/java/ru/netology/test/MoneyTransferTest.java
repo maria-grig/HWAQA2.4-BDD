@@ -1,5 +1,6 @@
 package ru.netology.test;
 import com.codeborne.selenide.Configuration;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,15 +10,23 @@ import ru.netology.page.LoginPage;
 import ru.netology.page.MoneyTransferPage;
 import ru.netology.page.VerificationPage;
 
+import static com.codeborne.selenide.Selenide.clearBrowserLocalStorage;
 import static com.codeborne.selenide.Selenide.open;
+import static org.openqa.selenium.devtools.v105.network.Network.clearBrowserCookies;
 
-    public class MoneyTransferTest {
+public class MoneyTransferTest {
 
         @BeforeEach
         void setup() {
             open("http://localhost:9999");
             Configuration.holdBrowserOpen = true;
         }
+
+    @AfterEach
+    void clear() {
+        clearBrowserCookies();
+        clearBrowserLocalStorage();
+    }
 
 
         @Test
@@ -35,4 +44,5 @@ import static com.codeborne.selenide.Selenide.open;
             Assertions.assertEquals(firstBalanceCard1 + sum, secondBalanceCard1);
             Assertions.assertEquals(firstBalanceCard2 - sum, secondBalanceCard2);
         }
+
     }
