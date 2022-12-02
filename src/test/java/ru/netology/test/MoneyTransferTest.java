@@ -73,4 +73,16 @@ public class MoneyTransferTest {
 
     }
 
+    @Test
+    void shouldReturnErrorWhenCardNumberFieldEmpty() {
+        LoginPage loginPage = new LoginPage();
+        VerificationPage verificationPage = loginPage.validLogin(DataHelper.getAuthInfo());
+        DashBoardPage dashBoardPage = verificationPage.validVerify(DataHelper.getCode(DataHelper.getAuthInfo()));
+        int firstBalanceCard2 = dashBoardPage.getSecondCardBalance();
+        int sum = DataHelper.generateValidAmount(firstBalanceCard2);
+        MoneyTransferPage moneyTransferPage = dashBoardPage.replenishCard1();
+        moneyTransferPage.makeTransferWithoutCardNumber(Integer.toString(sum));
+        moneyTransferPage.findErrorMessage("Ошибка! Произошла ошибка");
+    }
+
 }
