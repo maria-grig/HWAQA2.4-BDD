@@ -11,6 +11,7 @@ public class MoneyTransferPage {
     private SelenideElement from = $("[data-test-id='from'] input");
     private SelenideElement button = $("[data-test-id='action-transfer'] span.button__text");
     private SelenideElement errorMessage = $("[data-test-id='error-notification'] div.notification__content");
+
     public DashBoardPage makeValidTransfer(String sum, String cardNumber) {
         makeTransfer(sum, cardNumber);
         return new DashBoardPage();

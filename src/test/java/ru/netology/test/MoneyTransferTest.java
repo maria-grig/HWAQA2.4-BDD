@@ -1,4 +1,5 @@
 package ru.netology.test;
+
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -16,11 +17,11 @@ import static org.openqa.selenium.devtools.v105.network.Network.clearBrowserCook
 
 public class MoneyTransferTest {
 
-        @BeforeEach
-        void setup() {
-            open("http://localhost:9999");
-            Configuration.holdBrowserOpen = true;
-        }
+    @BeforeEach
+    void setup() {
+        open("http://localhost:9999");
+        Configuration.holdBrowserOpen = true;
+    }
 
     @AfterEach
     void clear() {
@@ -29,21 +30,22 @@ public class MoneyTransferTest {
     }
 
 
-        @Test
-        void shouldSuccessfullyRefillBalanceFirstCard() {
-            LoginPage loginPage = new LoginPage();
-            VerificationPage verificationPage = loginPage.validLogin(DataHelper.getAuthInfo());
-            DashBoardPage dashBoardPage1 = verificationPage.validVerify(DataHelper.getCode(DataHelper.getAuthInfo()));
-            int firstBalanceCard1 = dashBoardPage1.getFirstCardBalance();
-            int firstBalanceCard2 = dashBoardPage1.getSecondCardBalance();
-            int sum = DataHelper.generateValidAmount(firstBalanceCard2);
-            MoneyTransferPage moneyTransferPage = dashBoardPage1.replenishCard1();
-            DashBoardPage dashBoardPage2 = moneyTransferPage.makeValidTransfer(Integer.toString(sum), DataHelper.getSecondCard().getNumber());
-            int secondBalanceCard1 = dashBoardPage2.getFirstCardBalance();
-            int secondBalanceCard2 = dashBoardPage2.getSecondCardBalance();
-            Assertions.assertEquals(firstBalanceCard1 + sum, secondBalanceCard1);
-            Assertions.assertEquals(firstBalanceCard2 - sum, secondBalanceCard2);
-        }
+    @Test
+    void shouldSuccessfullyRefillBalanceFirstCard() {
+        LoginPage loginPage = new LoginPage();
+        VerificationPage verificationPage = loginPage.validLogin(DataHelper.getAuthInfo());
+        DashBoardPage dashBoardPage1 = verificationPage.validVerify(DataHelper.getCode(DataHelper.getAuthInfo()));
+        int firstBalanceCard1 = dashBoardPage1.getFirstCardBalance();
+        int firstBalanceCard2 = dashBoardPage1.getSecondCardBalance();
+        int sum = DataHelper.generateValidAmount(firstBalanceCard2);
+        MoneyTransferPage moneyTransferPage = dashBoardPage1.replenishCard1();
+        DashBoardPage dashBoardPage2 = moneyTransferPage.makeValidTransfer(Integer.toString(sum), DataHelper.getSecondCard().getNumber());
+        int secondBalanceCard1 = dashBoardPage2.getFirstCardBalance();
+        int secondBalanceCard2 = dashBoardPage2.getSecondCardBalance();
+        Assertions.assertEquals(firstBalanceCard1 + sum, secondBalanceCard1);
+        Assertions.assertEquals(firstBalanceCard2 - sum, secondBalanceCard2);
+    }
+
     @Test
     void shouldSuccessfullyRefillBalanceSecondCard() {
         LoginPage loginPage = new LoginPage();
@@ -84,6 +86,7 @@ public class MoneyTransferTest {
         moneyTransferPage.makeTransferWithoutCardNumber(Integer.toString(sum));
         moneyTransferPage.findErrorMessage("Ошибка! Произошла ошибка");
     }
+
     @Test
     void shouldReturnErrorForWrongCardNumber() {
         LoginPage loginPage = new LoginPage();
@@ -95,6 +98,7 @@ public class MoneyTransferTest {
         moneyTransferPage.makeValidTransfer(Integer.toString(sum), DataHelper.getInvalidCard().getNumber());
         moneyTransferPage.findErrorMessage("Ошибка! Произошла ошибка");
     }
+
     @Test
     void shouldReturnErrorWhenZeroSum() {
         LoginPage loginPage = new LoginPage();
