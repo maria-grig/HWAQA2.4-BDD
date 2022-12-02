@@ -30,7 +30,7 @@ public class MoneyTransferTest {
 
 
         @Test
-        void shouldRefillBalanceFirstCard() {
+        void shouldSuccessfullyRefillBalanceFirstCard() {
             LoginPage loginPage = new LoginPage();
             VerificationPage verificationPage = loginPage.validLogin(DataHelper.getAuthInfo());
             DashBoardPage dashBoardPage1 = verificationPage.validVerify(DataHelper.getCode(DataHelper.getAuthInfo()));
@@ -44,5 +44,20 @@ public class MoneyTransferTest {
             Assertions.assertEquals(firstBalanceCard1 + sum, secondBalanceCard1);
             Assertions.assertEquals(firstBalanceCard2 - sum, secondBalanceCard2);
         }
+    @Test
+    void shouldSuccessfullyRefillBalanceSecondCard() {
+        LoginPage loginPage = new LoginPage();
+        VerificationPage verificationPage = loginPage.validLogin(DataHelper.getAuthInfo());
+        DashBoardPage dashBoardPage1 = verificationPage.validVerify(DataHelper.getCode(DataHelper.getAuthInfo()));
+        int firstBalanceCard1 = dashBoardPage1.getFirstCardBalance();
+        int firstBalanceCard2 = dashBoardPage1.getSecondCardBalance();
+        int sum = DataHelper.generateValidAmount(firstBalanceCard1);
+        MoneyTransferPage moneyTransferPage = dashBoardPage1.replenishCard2();
+        DashBoardPage dashBoardPage2 = moneyTransferPage.makeValidTransfer(Integer.toString(sum), DataHelper.getFirstCard().getNumber());
+        int secondBalanceCard1 = dashBoardPage2.getFirstCardBalance();
+        int secondBalanceCard2 = dashBoardPage2.getSecondCardBalance();
+        Assertions.assertEquals(firstBalanceCard1 - sum, secondBalanceCard1);
+        Assertions.assertEquals(firstBalanceCard2 + sum, secondBalanceCard2);
+    }
 
     }
