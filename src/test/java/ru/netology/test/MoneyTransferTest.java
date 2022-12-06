@@ -71,7 +71,7 @@ public class MoneyTransferTest {
         int sum = DataHelper.generateInvalidAmount(firstBalanceCard2);
         MoneyTransferPage moneyTransferPage = dashBoardPage.replenishCard1();
         moneyTransferPage.makeTransfer(Integer.toString(sum), DataHelper.getSecondCard().getNumber());
-        moneyTransferPage.findErrorMessage("Ошибка! Попытка перевода суммы, превышающей лимит остатка на карте списания");
+        moneyTransferPage.findErrorMessage("Ошибка! Сумма перевода превышает остаток на карте списания");
 
     }
 
